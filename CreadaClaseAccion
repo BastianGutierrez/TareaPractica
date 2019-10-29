@@ -36,7 +36,55 @@ class Accion:
             print('El Precio de la Accion de la Fecha consultada es : ', self.precios_historicos[fechaAconsultar])
         else:
             print('El Precio de la Accion de la Fecha consultada es : ' , 0)
+#Metodo Obetener Rentabilidad
+    def obtener_rentabilidad(self):
+        rentabilidad=1
+        if (self.precios_historicos=={}):
+            rentabilidad=0
+        #Inicializacion
+        conta=0
+     
+        #Primer calculo de antiguedad de las fechas
+        for date in self.precios_historicos:
+            if(rentabilidad==0):
+                print("rentabilidad=",rentabilidad)
+                break
+            FechaIngresada=dt.strptime(date, "%Y-%m-%d")
+            if(conta==0):
+                conta=conta+1
+                PrimFecha=dt.strptime(date, "%Y-%m-%d")
+                continue
+            if (PrimFecha>FechaIngresada):
+                UltFecha=PrimFecha
+                PrimFecha=FechaIngresada
+            else:
+                if(UltFecha<FechaIngresada):
+                    UltFecha=FechaIngresada
+        #Luego de utilizar las fechas las devolvemos al formato original
+        PrimFecha= PrimFecha.strftime("%Y")+"-"+PrimFecha.strftime("%m")+"-"+PrimFecha.strftime("%d")
+        UltFecha= UltFecha.strftime("%Y")+"-"+UltFecha.strftime("%m")+"-"+UltFecha.strftime("%d")
+        
+        #Funcion que permite saber si utilizar el ultimo valor agregado o el ya existente en la ultima fecha
+        if(self.precios_historicos[UltFecha]==0 or UltFecha==False):
+            for date in self.precios_historicos:
+                if (self.precios_historicos[date]!= 0) :
+                    Ultprecio=self.precios_historicos[date]
+                    print(Ultprecio)
 
+            #Formula rentabilidad=(ultimo_precio/precio_mas_antiguo) - 1
+            rentabilidad = (Ultprecio/self.precios_historicos[PrimFecha]) -1
+            print("rentabilidad=",rentabilidad)
+        
+        else:
+        	# Primera condicion si no hay ultimo_precio o su valor es cero, se debe considerar el valor más actual de precios_historicos.
+            if(self.precios_historicos[PrimFecha]!=0):
+                rentabilidad = (self.precios_historicos[UltFecha]/self.precios_historicos[PrimFecha])-1
+
+            # Segunda condicion si no hay precios en precios_historicos, la rentabilidad es 0.
+            else:
+            	rentabilidad = 0 
+
+            print("Rentabilidad=",rentabilidad)
 
 
 #Prueba del programa con ejemplos dados 
@@ -55,3 +103,6 @@ print(Accion.precios_historicos)
 print('Obteniendo precio segun fecha')
 Accion.obtener_precio_para_fecha('2019-07-20')
 Accion.obtener_precio_para_fecha('2019-07-28')
+
+print('Rentabilidad de la Accion')
+Accion.obtener_rentabilidad()
