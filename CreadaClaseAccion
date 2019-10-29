@@ -1,0 +1,57 @@
+import datetime
+from datetime import datetime as dt
+#Creacion clase Accion
+
+class Accion:
+#Parametros
+#Constructor
+    def __init__(self,nemotecnico,ultimo_precio=0):
+        self.nemotecnico = nemotecnico
+        self.ultimo_precio = ultimo_precio
+#Key: string que representa la fecha formato "YYY-MM-DD"
+        date = datetime.datetime.now() 
+        self.fecha = date.strftime("%Y")+"-"+date.strftime("%m")+"-"+date.strftime("%d")
+#Diccionario = {}
+        self.precios_historicos = {
+            self.fecha: self.ultimo_precio
+        }
+#Metodo Actualizar Ultimo Precio
+    def actualizar_ultimo_precio(self,precio):
+        if (type(precio)==int or type(precio)==float):
+            for UltFecha in self.precios_historicos:
+                pass
+            self.precios_historicos[UltFecha]=float(precio)
+#Validacion
+        else: 
+            print(type(precio))
+            print('No se puede ingresar caracteres' , precio, 'en el precio')
+
+#Metodo Agregar un Precio Historico   
+    def agrega_precio_historico(self,fechaNueva,precioNuevo):
+        self.precios_historicos[fechaNueva]=float(precioNuevo)
+
+#Metodo Obtener el Precio Historico
+    def obtener_precio_para_fecha(self,fechaAconsultar):
+        if fechaAconsultar in self.precios_historicos:
+            print('El Precio de la Accion de la Fecha consultada es : ', self.precios_historicos[fechaAconsultar])
+        else:
+            print('El Precio de la Accion de la Fecha consultada es : ' , 0)
+
+
+
+#Prueba del programa con ejemplos dados 
+Accion = Accion('GOOGL', 120.01 )
+print('Creacion de una Accion')
+print(Accion.precios_historicos)
+
+Accion.actualizar_ultimo_precio(130.1)
+print('Modificacion de la Accion')
+print(Accion.precios_historicos)
+
+Accion.agrega_precio_historico( '2019-07-28', 123.067 )
+print('Creacion de nuevo precio historico')
+print(Accion.precios_historicos)
+
+print('Obteniendo precio segun fecha')
+Accion.obtener_precio_para_fecha('2019-07-20')
+Accion.obtener_precio_para_fecha('2019-07-28')
